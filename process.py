@@ -72,7 +72,7 @@ class Process:
         self.process_delayed_messages(current_time)
 
     def start(self):
-        printer.config(self.incremented_counter(), f'Iniciando {Back.MAGENTA}{Fore.BLACK}( {self.rank} ){Style.RESET_ALL}')
+        printer.config(self.incremented_counter(), f'Iniciando {Back.MAGENTA}{Fore.BLACK}( P{self.rank} ){Style.RESET_ALL}')
 
     def finish(self):
         if self.has_pending_messages():

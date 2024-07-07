@@ -1,5 +1,5 @@
 def fill_messages_with_time(messages):
-    max_time = max([msg["time"] + max([dest.get("delay", 0) for dest in msg.get("destinations", [])], default=0) for msg in messages])
+    max_time = max([msg["time"] + max([dest.get("delay", 0) for dest in msg.get("receivers", [])], default=0) for msg in messages])
     full_messages = []
     
     for t in range(max_time + 1):
