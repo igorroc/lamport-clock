@@ -10,7 +10,6 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 # * Configurações iniciais
-# ! Exercício do slide (4 processos) (com atraso)
 messages = [
     {"source": 0, "time": 0, "receivers": [{"p": 1}, {"p": 3, "delay": 6}]},
     {"source": 1, "time": 2, "receivers": [{"p": 2}, {"p": 3, "delay": 5}]},
@@ -43,14 +42,11 @@ while global_time <= len(messages):
                     process.send_message(dest["p"], current_time, delay)
     
     global_time += 1
-
     process.synchronize(global_time)
     process.receive_message(global_time)
 
-comm.Barrier()
-process.process_delayed_messages(global_time-1)  # Processa todas as mensagens atrasadas antes de finalizar
+process.synchronize(global_time-1)  # Processa todas as mensagens atrasadas antes de finalizar
 process.finish()
 
 # Finaliza o MPI
-comm.Barrier()
 MPI.Finalize()

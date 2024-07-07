@@ -1,16 +1,16 @@
 from colorama import Fore, Style
 
-def config(count, string):
-    print(f"{Fore.RED}[CONFIG {count:03d}]{Style.RESET_ALL} {string}")
+def config(string):
+    print(f"{Fore.RED}[CONFIG]{Style.RESET_ALL} {string}")
 
-def error(count, string):
-    print(f"{Fore.RED}[ERRO {count:03d}]{Style.RESET_ALL} {string}")
+def error(string):
+    print(f"{Fore.RED}[ERRO]{Style.RESET_ALL} {string}")
 
-def warning(count, string):
-    print(f"{Fore.YELLOW}[WARN {count:03d}]{Style.RESET_ALL} {string}")
+def warning(string):
+    print(f"{Fore.YELLOW}[WARN]{Style.RESET_ALL} {string}")
 
-def info(count, string):
-    print(f"{Fore.BLUE}[INFO {count:03d}]{Style.RESET_ALL} {string}")
+def info(string):
+    print(f"{Fore.BLUE}[INFO]{Style.RESET_ALL} {string}")
 
-def success(count, string):
-    print(f"{Fore.GREEN}[SUCESSO {count:03d}]{Style.RESET_ALL} {string}")
+def success(string):
+    print(f"{Fore.GREEN}[SUCCESS]{Style.RESET_ALL} {string}")
