@@ -10,11 +10,16 @@ Este projeto implementa o algoritmo de relógio de Lamport para sincronização 
 lamport-clock/
 ├── index.py
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── utils/
+    ├── config.py
+    └── printer.py
 ```
 
--   `index.py:` Contém o código principal que implementa o algoritmo de relógio de Lamport com comunicação causal.
--   `README.md:` Documentação do projeto.
+-   `index.py`: Arquivo principal que inicializa os processos MPI, define a configuração de mensagens a serem enviadas, e sincroniza os processos.
+-   `process.py`: Define a classe `Process` que gerencia o relógio lógico, o envio e recebimento de mensagens, e a lógica de atraso.
+-   `utils/config.py`: Configurações de terminal para garantir a exibição correta dos caracteres.
+-   `utils/printer.py`: Funções utilitárias para exibir mensagens coloridas no console.
 -   `requirements.txt:` Arquivo com as dependências do projeto.
 
 ## Pré-requisitos
@@ -66,7 +71,7 @@ sudo apt-get install -y mpich
 1. Crie um ambiente virtual com o Python 3.6 ou superior:
 
 ```bash
-python3 -m venv venv
+python -m venv venv
 ```
 
 2. Ative o ambiente virtual e instale as dependências do projeto:
@@ -84,7 +89,7 @@ pip install -r requirements.txt
 3. Execute o script utilizando `mpiexec` ou `mpirun`:
 
 ```bash
-mpiexec -n 2 python lamport_clock.py
+mpiexec -n 4 python lamport_clock.py
 ```
 
-Substitua o número `2` pelo número de processos que deseja executar.
+Substitua o número `4` pelo número de processos que deseja executar.
