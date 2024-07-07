@@ -25,13 +25,13 @@ class Process:
         self.current_time = current_time
         send_time = current_time + delay
         self.comm.send((self.clock.copy(), send_time), dest=dest)
-        delay_print = f' com atraso de {delay}t' if delay > 0 else ''
+        delay_print = f' com atraso de {delay}t' if delay > 1 else ''
         printer.info(self.incremented_counter(), f'{Fore.GREEN}[SEND]{Style.RESET_ALL} (T{current_time}) P{self.rank} enviou {self.clock}{delay_print} para P{dest}')
 
     def multicast_message(self, current_time):
         if self.debug:
             printer.info(self.incremented_counter(), f'P{self.rank} está realizando multicast...')
-        send_time = current_time
+        send_time = current_time + 1
         self.current_time = current_time
         for dest in range(self.size):
             if dest != self.rank:
@@ -47,7 +47,7 @@ class Process:
             if current_time >= received_time:
                 if self.check_delay_conditions(source, received_clock):
                     self.clock = np.maximum(self.clock, received_clock)
-                    printer.info(self.incremented_counter(), f'{Fore.MAGENTA}[RECEIVE]{Style.RESET_ALL} (T{received_time}) P{self.rank} recebeu de P{source} {received_clock}, relógio atualizado para {self.clock}')
+                    printer.info(self.incremented_counter(), f'{Fore.MAGENTA}[RECEIVE]{Style.RESET_ALL} (T{received_time}) P{self.rank} recebeu de P{source} {received_clock}')
                 else:
                     reason = 'clock_condition'
                     self.message_queue.append((source, received_clock, received_time, reason))
@@ -71,7 +71,7 @@ class Process:
             if current_time >= received_time and self.check_delay_conditions(source, received_clock):
                 self.clock = np.maximum(self.clock, received_clock)
                 if reason == 'arrival_time':
-                    printer.info(self.incremented_counter(), f'{Fore.MAGENTA}[RECEIVE]{Style.RESET_ALL} (T{current_time}) P{self.rank} recebeu de P{source} {received_clock}, relógio atualizado para {self.clock}')
+                    printer.info(self.incremented_counter(), f'{Fore.MAGENTA}[RECEIVE]{Style.RESET_ALL} (T{current_time}) P{self.rank} recebeu de P{source} {received_clock}')
                 elif reason == 'clock_condition':
                     printer.info(self.incremented_counter(), f'{Fore.MAGENTA}[RECEIVE]{Style.RESET_ALL} (T{current_time}) P{self.rank} processou mensagem atrasada de P{source} {received_clock}, relógio atualizado para {self.clock}')
                 self.message_queue.remove(message)

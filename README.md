@@ -16,19 +16,19 @@ lamport-clock/
     └── printer.py
 ```
 
--   `index.py`: Arquivo principal que inicializa os processos MPI, define a configuração de mensagens a serem enviadas, e sincroniza os processos.
--   `process.py`: Define a classe `Process` que gerencia o relógio lógico, o envio e recebimento de mensagens, e a lógica de atraso.
--   `utils/config.py`: Configurações de terminal para garantir a exibição correta dos caracteres.
--   `utils/printer.py`: Funções utilitárias para exibir mensagens coloridas no console.
--   `requirements.txt:` Arquivo com as dependências do projeto.
+- `index.py`: Arquivo principal que inicializa os processos MPI, define a configuração de mensagens a serem enviadas, e sincroniza os processos.
+- `process.py`: Define a classe `Process` que gerencia o relógio lógico, o envio e recebimento de mensagens, e a lógica de atraso.
+- `utils/config.py`: Configurações de terminal para garantir a exibição correta dos caracteres.
+- `utils/printer.py`: Funções utilitárias para exibir mensagens coloridas no console.
+- `requirements.txt:` Arquivo com as dependências do projeto.
 
 ## Pré-requisitos
 
 Para rodar este projeto, você precisará ter o seguinte software instalado:
 
--   Python 3.6 ou superior
--   MPI (MPICH no Linux ou MS-MPI no Windows)
--   Biblioteca mpi4py (Instalada no ambiente virtual)
+- Python 3.6 ou superior
+- MPI (MPICH no Linux ou MS-MPI no Windows)
+- Biblioteca mpi4py (Instalada no ambiente virtual)
 
 ## Instalação
 
@@ -93,3 +93,41 @@ mpiexec -n 4 python lamport_clock.py
 ```
 
 Substitua o número `4` pelo número de processos que deseja executar.
+
+## Exemplos:
+
+### 1. Exemplo: 3 Processos com multicast
+
+```py
+messages = [
+    {"source": 0, "time": 0, "receivers": []},
+    {"source": 1, "time": 2, "receivers": []},
+    {"source": 2, "time": 4, "receivers": []},
+]
+```
+
+![Exemplo 1](./assets/multicast.png)
+
+### 2. Exemplo: 3 Processos sem atraso
+
+```py
+5messages = [
+    {"source": 0, "time": 0, "receivers": [{"p": 1}, {"p": 2, "delay": 4}]},
+    {"source": 1, "time": 2, "receivers": [{"p": 2}]},
+    {"source": 2, "time": 4, "receivers": [{"p": 1}]},
+]
+```
+
+![Exemplo 2](./assets/no-delay.png)
+
+### 3. Exemplo: 4 Processos com atraso (Exercício do slide)
+
+```py
+messages = [
+    {"source": 0, "time": 0, "receivers": [{"p": 1}, {"p": 3, "delay": 6}]},
+    {"source": 1, "time": 2, "receivers": [{"p": 2}, {"p": 3, "delay": 5}]},
+    {"source": 2, "time": 4, "receivers": [{"p": 3}]},
+]
+```
+
+![Exemplo 3](./assets/delay.png)
