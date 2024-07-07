@@ -1,28 +1,39 @@
 from mpi4py import MPI
-import numpy as np
+from process import Process
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
 
-# Inicializa o relógio vetorial
-vector_clock = np.zeros(size, dtype=int)
+# Cria a instância do processo
+process = Process(rank, size)
 
-def send_event(destination, clock):
-    clock[rank] += 1
-    comm.send(clock, dest=destination)
-    print(f'Processo {rank} enviou {clock} para {destination}')
-
-def receive_event(source, clock):
-    received_clock = comm.recv(source=source)
-    clock = np.maximum(clock, received_clock)
-    clock[rank] += 1
-    print(f'Processo {rank} recebeu {received_clock} de {source}, relógio atualizado para {clock}')
-    return clock
+# Sincronização inicial para garantir que todos os processos iniciem juntos
+process.synchronize()
 
 if rank == 0:
-    send_event(1, vector_clock)
-    vector_clock = receive_event(1, vector_clock)
+    process.multicast_message()
+    process.synchronize()  # Espera todos os processos enviarem suas mensagens
+    process.receive_message()
+    process.synchronize()
 elif rank == 1:
-    vector_clock = receive_event(0, vector_clock)
-    send_event(0, vector_clock)
+    process.synchronize()  # Espera todos os processos enviarem suas mensagens
+    process.receive_message()
+    process.multicast_message()
+    process.synchronize()
+elif rank == 2:
+    process.synchronize()  # Espera todos os processos enviarem suas mensagens
+    process.receive_message()
+    process.multicast_message()
+    process.synchronize()
+elif rank == 3:
+    process.synchronize()  # Espera todos os processos enviarem suas mensagens
+    process.receive_message()
+    process.multicast_message()
+    process.synchronize()
+
+# Sincronização final para garantir que todos os processos terminem juntos
+process.synchronize()
+
+# Imprime o relógio final de cada processo, com o texto "Finalizou - "
+print(f'Finalizou - {process}')
