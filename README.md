@@ -89,7 +89,7 @@ pip install -r requirements.txt
 3. Execute o script utilizando `mpiexec` ou `mpirun`:
 
 ```bash
-mpiexec -n 4 python lamport_clock.py
+mpiexec -n 4 python index.py
 ```
 
 Substitua o número `4` pelo número de processos que deseja executar.
