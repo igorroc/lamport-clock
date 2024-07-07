@@ -8,19 +8,19 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 # Configurações iniciais
-messages_to_send = [
+messages = [
     {"source": 0, "time": 0, "destinations": []},
     {"source": 1, "time": 2, "destinations": []},
     {"source": 2, "time": 4, "destinations": []},
 ]
 # ! Exercício do slide
-# messages_to_send = [
+# messages = [
 #     {"source": 0, "time": 0, "destinations": [{"p": 1, "delay": 1}, {"p": 3, "delay": 6}]},
 #     {"source": 1, "time": 2, "destinations": [{"p": 2, "delay": 1}, {"p": 3, "delay": 5}]},
 #     {"source": 2, "time": 4, "destinations": [{"p": 3, "delay": 1}]},
 # ]
 
-messages_to_send = config.fill_messages_with_time(messages_to_send)
+messages = config.fill_messages_with_time(messages)
 
 # Sincronização inicial para garantir que todos os processos estejam prontos antes de continuar
 comm.Barrier()
@@ -31,8 +31,8 @@ process.start()
 
 global_time = 0
 
-while global_time <= len(messages_to_send):
-    for message in messages_to_send:
+while global_time <= len(messages):
+    for message in messages:
         if "source" not in message:
             continue
         if rank == message["source"] and message["time"] == global_time:
